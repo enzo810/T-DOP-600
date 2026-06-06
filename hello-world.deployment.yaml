@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-world-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: hello-world
+  template:
+    metadata:
+      name: hello-world
+      labels:
+        app: hello-world
+    spec:
+      containers:
+        - name: hello-world
+          image: samber/hello-world-nodejs
+          env:
+            - name: PORT
+              value: "8080"
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - mountPath: "/app/data"
+              name: hello-world-persistent-volume
+      volumes:
+        - name: hello-world-persistent-volume
+          persistentVolumeClaim:
+            claimName: hello-world-persistent-volume-claim
