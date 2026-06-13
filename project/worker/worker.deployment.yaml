@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: worker-deployment
+spec:
+  selector:
+    matchLabels:
+      app: worker
+  template:
+    metadata:
+      labels:
+        app: worker
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: worker
+          image: enzo2170/worker:latest
+          envFrom:
+            - configMapRef:
+                name: postgres-configmap
+            - configMapRef:
+                name: redis-configmap
+            - secretRef:
+                name: postgres-secret
+          resources:
+            requests:
+              memory: "256Mi"
+            limits:
+              memory: "256Mi"

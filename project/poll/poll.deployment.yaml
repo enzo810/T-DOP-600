@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: poll-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: poll
+  template:
+    metadata:
+      labels:
+        app: poll
+    spec:
+      restartPolicy: Always
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  app: poll
+              topologyKey: kubernetes.io/hostname
+      containers:
+        - name: poll
+          image: enzo2170/poll:latest
+          ports:
+            - containerPort: 80
+          envFrom:
+            - configMapRef:
+                name: redis-configmap
+          resources:
+            requests:
+              memory: "128Mi"
+            limits:
+              memory: "128Mi"
