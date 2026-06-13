@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
   name: redis-configmap
 data:
-  port: "6379"
+  REDIS_HOST: "redis-service"

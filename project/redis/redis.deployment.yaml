@@ -12,6 +12,7 @@ spec:
       labels:
         app: redis
     spec:
+      restartPolicy: Always
       nodeSelector:
         app: worker1
       containers:
